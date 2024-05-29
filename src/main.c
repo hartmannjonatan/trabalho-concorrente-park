@@ -111,7 +111,7 @@ int main(int argc, char *argv[]){
     cli_args->n = _config.clients;
 
     // Inicializa os funcionarios da bilheteria.
-    ticket_t **tickets = init_tickets(_config.tickets);
+    ticket_t **tickets = init_tickets(_config.toys);
     ticket_args->tickets = tickets;
     ticket_args->n = _config.tickets;
     

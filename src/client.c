@@ -12,12 +12,12 @@
 #include "queue.h"
 #include "shared.h"
 
+pthread_t *client_threads;
+int n_threads;
 
 // Thread que implementa o fluxo do cliente no parque.
 void *enjoy(void *arg){
-
-    //Sua lógica aqui
-
+    client_t* client = (client_t*) arg;
 
     debug("[EXIT] - O turista saiu do parque.\n");
     pthread_exit(NULL);
@@ -47,10 +47,16 @@ void queue_enter(client_t *self){
 
 // Essa função recebe como argumento informações sobre o cliente e deve iniciar os clientes.
 void open_gate(client_args *args){
-    // Sua lógica aqui
+    n_threads = args->n;
+    client_threads = (pthread_t *) malloc(sizeof(pthread_t)*args->n);
+    for (int i = 0; i < args->n; i++) {
+        pthread_create(&client_threads[i], NULL, enjoy, (void *)args->clients[i]);
+    }
 }
 
 // Essa função deve finalizar os clientes
 void close_gate(){
-   //Sua lógica aqui
+    for (int i = 0; i < n_threads; i++)
+        pthread_join(client_threads[i], NULL);
+    free(client_threads);
 }
