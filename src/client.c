@@ -19,7 +19,6 @@ void wait_ticket(client_t *self);
 void queue_enter(client_t *self);
 
 pthread_t *threads_clientes; // Vetor de threads de clientes inicializadas no open_gate
-int n_clientes; // Número de clientes recebido como parâmetro da main
 
 // Thread que implementa o fluxo do cliente no parque.
 void *enjoy(void *arg){
@@ -70,9 +69,9 @@ void queue_enter(client_t *self) {
 // Essa função recebe como argumento informações sobre o cliente e deve iniciar os clientes.
 void open_gate(client_args *args){
     array_clients = args->clients;
-    n_clientes = args->n; // n_clientes recebe o número de threads recebida de args (da main)
-    threads_clientes = (pthread_t*) malloc(sizeof(pthread_t)*n_clientes); // aloca o vetor de n_clientes
-    for (int i = 0; i < n_clientes; i++) {
+    n_clients = args->n; // n_clients recebe o número de threads recebida de args (da main)
+    threads_clientes = (pthread_t*) malloc(sizeof(pthread_t)*n_clients); // aloca o vetor de n_clients
+    for (int i = 0; i < n_clients; i++) {
         sem_init(&array_clients[i]->semaphore, 0, 1); // instancia o mutex do cliente 
         pthread_create(&threads_clientes[i], NULL, enjoy, (void *)args->clients[i]); // cria uma thread por cliente chamando o método enjoy
     }
@@ -80,7 +79,7 @@ void open_gate(client_args *args){
 
 // Essa função deve finalizar os clientes
 void close_gate(){
-    for (int i = 0; i < n_clientes; i++) {
+    for (int i = 0; i < n_clients; i++) {
         pthread_join(threads_clientes[i], NULL); // finaliza a thread de cada cliente
         sem_destroy(&array_clients[i]->semaphore); // destroy o semaforo de cada cliente
     }

@@ -5,6 +5,7 @@
 
 // Você pode declarar novas funções (ou variaveis compartilhadas) aqui
 extern client_t** array_clients;  // Array de clientes
+extern int n_clients;
 
 extern pthread_mutex_t tickets_mutex; // Mutex usado para controlar a abertura da bilheteria (clientes aguardam que esta seja aberta)
 extern pthread_cond_t open_tickets_cond; // Condição que verifica se a bilheteria já foi aberta
