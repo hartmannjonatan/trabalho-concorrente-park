@@ -32,11 +32,12 @@ void *enjoy(void *arg){
 
 // Funcao onde o cliente compra as moedas para usar os brinquedos
 void buy_coins(client_t *self){
-    // Sua lógica aqui
+    self->coins = (rand() % MAX_COINS) + 1;
 }
 
 // Função onde o cliente espera a liberacao da bilheteria para adentrar ao parque.
 void wait_ticket(client_t *self){
+    queue_enter(self); // Cliente entra na fila da bilheteria
     debug("[WAITING] - Cliente [%d] esperando pela abertura da bilheteria\n", self->id);
     // essa função bloqueia o cliente até que a condition "open_tickets" seja satisfeita
     pthread_mutex_lock(&tickets_mutex);  // Trava o mutex para garantir acesso exclusivo à condição
@@ -45,17 +46,18 @@ void wait_ticket(client_t *self){
         // vale lembrar que o pthread_cond_wait quando chamado faz um unlock no tickets_mutex
         // e até que o sinal de condição válida (feito em ticket.c) seja feito, a thread do cliente fica bloqueada
     }
-    pthread_mutex_unlock(&tickets_mutex); // Destrava o mutex relacionado à espera, significando que a bilheteria foi aberta
-
-    debug("[WAITING] - Cliente [%d] pode acessar a fila da bilheteria\n", self->id);
-
-    //queue_enter(self);
+    pthread_mutex_unlock(&tickets_mutex); // Destrava o mutex relacionado à espera, significando que a bilheteria foi aberta 
 }
 
 // Funcao onde o cliente entra na fila da bilheteria
 void queue_enter(client_t *self){
-    // Sua lógica aqui.
+    pthread_mutex_lock(&queue_mutex); // Trava o mutex para garantir a entrada exclusiva de um cliente por vez na fila da bilheteria
+    enqueue(gate_queue, self->id);   // Cliente entra na fila da bilheteria (id do cliente é colocado na fila indicando que o cliente entrou)
+    sem_post(&queue_semaphore); // Dá um post no semáforo da fila, indicando que um cliente entrou
+    pthread_mutex_unlock(&queue_mutex); // Destrava o mutex, permitindo que um próximo cliente entre na fila
     debug("[WAITING] - Turista [%d] entrou na fila do portao principal\n", self->id);
+
+    sem_wait(&self->semaphore); // Bloqueia o cliente, para que ele só faça a compra depois de ser atendido (espera na fila enquanto não for atendido)
 
     // Sua lógica aqui.
     buy_coins(self);
@@ -66,16 +68,20 @@ void queue_enter(client_t *self){
 
 // Essa função recebe como argumento informações sobre o cliente e deve iniciar os clientes.
 void open_gate(client_args *args){
+    array_clients = args->clients;
     n_clientes = args->n; // n_clientes recebe o número de threads recebida de args (da main)
     threads_clientes = (pthread_t*) malloc(sizeof(pthread_t)*n_clientes); // aloca o vetor de n_clientes
     for (int i = 0; i < n_clientes; i++) {
+        sem_init(&array_clients[i]->semaphore, 0, 1); // instancia o mutex do cliente 
         pthread_create(&threads_clientes[i], NULL, enjoy, (void *)args->clients[i]); // cria uma thread por cliente chamando o método enjoy
     }
 }
 
 // Essa função deve finalizar os clientes
 void close_gate(){
-    for (int i = 0; i < n_clientes; i++)
+    for (int i = 0; i < n_clientes; i++) {
         pthread_join(threads_clientes[i], NULL); // finaliza a thread de cada cliente
+        sem_destroy(&array_clients[i]->semaphore); // destroy o semaforo de cada cliente
+    }
     free(threads_clientes); // desaloca o vetor de threads
 }

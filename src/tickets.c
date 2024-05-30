@@ -28,9 +28,16 @@ void *sell(void *args){
     }
     pthread_mutex_unlock(&counter_mutex);
 
-    // vender moedas
+    while (TRUE) { // Utiliza a ideia de bag of work para as threads funcionárias
+        pthread_mutex_lock(&queue_mutex); // Bloqueia o mutex, para que a retirada do cliente da fila sejá feita de forma atômica
+        if (is_queue_empty(gate_queue)) // Verifica se a fila não está vazia
+            break; // Se a fila estiver vazia, todas as threads funcionárias devem encerrar seu trabalho, ou seja, dá um break no while
+        int id_cliente = dequeue(gate_queue); // Senão, retira o cliente da fila para que seja atendido 
+        pthread_mutex_unlock(&queue_mutex); // Desbloqueia o mutex do acesso a fila 
+        sem_post(&array_clients[id_cliente-1]->semaphore); // Destrava o cliente que será atendido, ou seja, o cliente que foi retirado da fila, com base no seu id
+    }
 
-    pthread_exit(NULL);
+    pthread_exit(NULL); // Encerra as threads funcionária
 }
 
 // Essa função recebe como argumento informações sobre a bilheteria e deve iniciar os atendentes.
