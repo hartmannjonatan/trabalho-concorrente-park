@@ -11,7 +11,7 @@ pthread_cond_t open_tickets_cond = PTHREAD_COND_INITIALIZER; // Condição que v
 int tickets_isopen = 0; // variável que identifica se a bilheteria está aberta ou não
 
 pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER; // Mutex usado para controlar a entrada dos clientes na fila da bilheteria
-sem_t queue_semaphore;
+sem_t queue_semaphore; // Semáforo usado para controlar a entrada e saída dos clientes na fila da bilheteria
 
 /**********************************
  *          ATENÇÃO               *

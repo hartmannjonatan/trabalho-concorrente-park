@@ -37,7 +37,6 @@ void buy_coins(client_t *self){
 
 // Função onde o cliente espera a liberacao da bilheteria para adentrar ao parque.
 void wait_ticket(client_t *self){
-    queue_enter(self); // Cliente entra na fila da bilheteria
     debug("[WAITING] - Cliente [%d] esperando pela abertura da bilheteria\n", self->id);
     // essa função bloqueia o cliente até que a condition "open_tickets" seja satisfeita
     pthread_mutex_lock(&tickets_mutex);  // Trava o mutex para garantir acesso exclusivo à condição
@@ -46,11 +45,13 @@ void wait_ticket(client_t *self){
         // vale lembrar que o pthread_cond_wait quando chamado faz um unlock no tickets_mutex
         // e até que o sinal de condição válida (feito em ticket.c) seja feito, a thread do cliente fica bloqueada
     }
-    pthread_mutex_unlock(&tickets_mutex); // Destrava o mutex relacionado à espera, significando que a bilheteria foi aberta 
+    pthread_mutex_unlock(&tickets_mutex); // Destrava o mutex relacionado à espera, significando que a bilheteria foi aberta
+
+    queue_enter(self); // Cliente entra na fila da bilheteria
 }
 
 // Funcao onde o cliente entra na fila da bilheteria
-void queue_enter(client_t *self){
+void queue_enter(client_t *self) {
     pthread_mutex_lock(&queue_mutex); // Trava o mutex para garantir a entrada exclusiva de um cliente por vez na fila da bilheteria
     enqueue(gate_queue, self->id);   // Cliente entra na fila da bilheteria (id do cliente é colocado na fila indicando que o cliente entrou)
     sem_post(&queue_semaphore); // Dá um post no semáforo da fila, indicando que um cliente entrou
