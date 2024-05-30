@@ -92,7 +92,7 @@ int main(int argc, char *argv[]){
 
     client_args *cli_args = (client_args *) malloc(sizeof(client_args));
     tickets_args *ticket_args = (tickets_args *) malloc(sizeof(tickets_args));
-    // toy_args *toys_args = (toy_args *) malloc(sizeof(toy_args));
+    toy_args *toys_args = (toy_args *) malloc(sizeof(toy_args));
 
     config_t _config = parse(argc, argv); // ./program -p (pessoas) -t (brinquedos) -g (bilheterias) -s (semente) -h (ajuda)
     srand(_config.seed); //Alimentando o gerador pseudo-aleatorio.
@@ -103,10 +103,10 @@ int main(int argc, char *argv[]){
     init_main_queue();
     
     // Inicializa os brinquedos.
-    // toy_t **toys = init_toys(_config.toys);
+    toy_t **toys = init_toys(_config.toys);
 
     // Inicializa os clientes.
-    client_t **clients = init_clients(_config.clients, _config.toys, NULL);
+    client_t **clients = init_clients(_config.clients, _config.toys, toys);
     cli_args->clients = clients;
     cli_args->n = _config.clients;
 
@@ -116,8 +116,8 @@ int main(int argc, char *argv[]){
     ticket_args->n = _config.tickets;
     
     // Recebe os argumentos para os brinquedos.
-    // toys_args->toys = toys;
-    // toys_args->n = _config.toys;
+    toys_args->toys = toys;
+    toys_args->n = _config.toys;
 
     // Ligando os brinquedos.
     // open_toys(toys_args);
@@ -133,7 +133,7 @@ int main(int argc, char *argv[]){
     close_tickets();
 
     // Desligam os brinquedos.
-    // close_toys();
+    close_toys();
 
     // Desalocando funcionarios
     finish_tickets(tickets, _config.tickets);
@@ -142,7 +142,7 @@ int main(int argc, char *argv[]){
     finish_clients(clients, _config.clients);
     
     // Desalocando brinquedos.
-    // finish_toys(toys, _config.toys);
+    finish_toys(toys, _config.toys);
 
     /********************************************************************************
     *                                       EXCEÇÃO                                 *
@@ -155,7 +155,7 @@ int main(int argc, char *argv[]){
     // Desalocando argumentos.
     free(cli_args);
     free(ticket_args);
-    // free(toys_args);
+    free(toys_args);
 
     // Destruindo filas
     destroy_main_queue();
