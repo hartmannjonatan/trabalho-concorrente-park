@@ -50,7 +50,12 @@ void *sell(void *args){
             has_clients = FALSE; // Define has_clients como falso quando todos os clientes forem atendidos
             pthread_mutex_unlock(&counter_clients_mutex); // Desbloqueia o mutex do contador de clientes
             sem_post(&queue_semaphore); // Ponto chave do funcionamento: desbloqueia a as threads que possivelmente estão esperando por clientes caso não haja (evita deadlock)
-            break; // Sai do loop
+
+            // Como apenas o funcionário que atender o último cliente irá executar esse código, ele printa que a bilheteria fechou
+            debug("[INFO] - Bilheteria Fechou!\n") // Printa que a bilheteria fechou, após todos os atendentes finalizarem as vendas
+            tickets_isopen = 0; // Seta variável que controla o funcionamento da bilheteria para 0 (embora seja utilizado apenas na inicialização)
+
+            break; // Sai do loop (não é necessário atender mais clientes)
         }
         pthread_mutex_unlock(&counter_clients_mutex); // desbloqueia o mutex do contador de clientes
     }
@@ -74,8 +79,6 @@ void close_tickets(){
     for (int i = 0; i < n_tickets; i++)
         pthread_join(threads_tickets[i], NULL); // finaliza a thread de cada atendente
 
-    debug("[INFO] - Bilheteria Fechou!\n") // Printa que a bilheteria fechou, após todos os atendentes finalizarem as vendas
-    tickets_isopen = 0; // Seta variável que controla o funcionamento da bilheteria para 0 (embora seja utilizado apenas na inicialização)
     pthread_mutex_destroy(&counter_workers_mutex); // Destroy o mutex contador de funcionários inicializados
     pthread_mutex_destroy(&counter_clients_mutex); // Destroy o mutex contador de clientes atendidos
 
