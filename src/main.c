@@ -110,7 +110,7 @@ int main(int argc, char *argv[]){
     toy_t **toys = init_toys(_config.toys);
 
     // Inicializa os clientes.
-    client_t **clients = init_clients(_config.clients, _config.toys, NULL);
+    client_t **clients = init_clients(_config.clients, _config.toys, toys);
     cli_args->clients = clients;
     cli_args->n = _config.clients;
 

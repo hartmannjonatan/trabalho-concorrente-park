@@ -11,12 +11,14 @@
 #include "client.h"
 #include "queue.h"
 #include "shared.h"
+#include "toy.h"
 
 // Declaração das assinaturas das funções privadas (não disponíveis em client.h)
 void *enjoy(void *arg);
 void buy_coins(client_t *self);
 void wait_ticket(client_t *self);
 void queue_enter(client_t *self);
+toy_t* choose_toy(client_t* self);
 
 pthread_t *threads_clientes; // Vetor de threads de clientes inicializadas no open_gate
 

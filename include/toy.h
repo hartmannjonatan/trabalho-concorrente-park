@@ -5,7 +5,7 @@
 
 // Você pode declarar novas funções aqui
 
-void access_toy(toy_t *self);
+void access_toy(toy_t *self, int client_id);
 
 /********************************
  *          ATENÇÃO             *

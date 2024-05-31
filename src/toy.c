@@ -69,7 +69,7 @@ void *turn_on(void *args){
     int cont;
     while (cont < 21) {
 
-        debug("[INFO] - Clientes podem entrar no brinquedo [%d]!\n"); // printa que o brinquedo está disponível
+        debug("[INFO] - Clientes podem entrar no brinquedo [%d]!\n", toy->id); // printa que o brinquedo está disponível
         toy->toy_isrunning = 0; // a variável que identifica se o brinquedo está em execução é alterada para 0 (false)
         pthread_cond_broadcast(&open_tickets_cond); // utilizamos o cond_broadcast para sinalizar a TODAS as threads dos clientes que o brinquedo está disponível
 
@@ -101,8 +101,8 @@ void open_toys(toy_args *args){
         pthread_mutex_init(&args->toys[i]->toy_mutex, NULL); // inicializa o mutex relacionado ao controle de execução do brinquedo
         pthread_cond_init(&args->toys[i]->running_toy_cond, NULL); // inicializa a condição relacionada à execução do brinquedo
         threads_toys[i] = args->toys[i]->thread; // associa cada elemento do vetor de threads com a thread já definida em toys_t
-        sem_init(&args->toys[i]->capacity_semaphore, NULL, args->toys[i]->capacity); // inicializa o semáforo de capacidade em cada brinquedo
-        sem_init(&args->toys[i]->join_semaphore, NULL, 0); // inicializa o semáforo de controle de execução em cada brinquedo
+        sem_init(&args->toys[i]->capacity_semaphore, 0, args->toys[i]->capacity); // inicializa o semáforo de capacidade em cada brinquedo
+        sem_init(&args->toys[i]->join_semaphore, 0, 0); // inicializa o semáforo de controle de execução em cada brinquedo
         pthread_create(&threads_toys[i], NULL, turn_on, (void *)args->toys[i]); // cria uma thread por brinquedo chamando o método turn_on
     }
 }
