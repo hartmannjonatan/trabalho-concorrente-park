@@ -26,10 +26,19 @@ void *enjoy(void *arg){
     wait_ticket(client); // cliente espera pela liberação da bilheteria
 
     // Ir brincar
+    while (client->coins > 0) {
+        toy_t* toy = choose_toy(client);
+        client->coins--;
+        access_toy(toy);
+    }
 
     debug("[EXIT] - O turista saiu do parque.\n");
 
     pthread_exit(NULL);
+}
+
+toy_t* choose_toy(client_t *self){
+    return self->toys[(rand() % self->number_toys)];
 }
 
 // Funcao onde o cliente compra as moedas para usar os brinquedos
