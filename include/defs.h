@@ -36,6 +36,7 @@ typedef struct toy{
   pthread_mutex_t toy_mutex; // Mutex usado para controlar a execução do brinquedo
   pthread_cond_t running_toy_cond; // Condição que verifica se está em execução
   int toy_isrunning; // variável que identifica se o brinquedo está executando ou não
+  int toy_isfinish; // variável que identifica se o brinquedo já finalizou a execução (permite o cliente sair dele)
   pthread_t thread;          // A thread de um brinquedo.
 } toy_t;
 
