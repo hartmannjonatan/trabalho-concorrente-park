@@ -154,7 +154,7 @@ int main(int argc, char *argv[]){
     *                                       EXCEÇÃO                                 *
     *********************************************************************************/
     
-    // Sincronize aqui
+    // Sincronize aquis
 
     // Desalocando argumentos.
     free(cli_args);

@@ -52,7 +52,7 @@ void *sell(void *args){
             sem_post(&queue_semaphore); // Ponto chave do funcionamento: desbloqueia a as threads que possivelmente estão esperando por clientes caso não haja (evita deadlock)
 
             // Como apenas o funcionário que atender o último cliente irá executar esse código, ele printa que a bilheteria fechou
-            debug("[INFO] - Bilheteria Fechou!\n") // Printa que a bilheteria fechou, após todos os atendentes finalizarem as vendas
+            debug("[INFO] - Bilheteria Fechou!\n") // Printa que a bilheteria fechou, após todos os atendentes retirarem os clientes da fila (ou seja, é possível que hajam prints de clientes realizando a compra de moedas mesmo após a bilheteria fechar! É o comportamento esperado segundo o README)
             tickets_isopen = 0; // Seta variável que controla o funcionamento da bilheteria para 0 (embora seja utilizado apenas na inicialização)
 
             break; // Sai do loop (não é necessário atender mais clientes)

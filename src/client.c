@@ -25,7 +25,10 @@ void *enjoy(void *arg){
     client_t* client = (client_t*) arg; // converte o void* para client_t*
     wait_ticket(client); // cliente espera pela liberação da bilheteria
 
+    // Ir brincar
+
     debug("[EXIT] - O turista saiu do parque.\n");
+
     pthread_exit(NULL);
 }
 
@@ -59,10 +62,7 @@ void queue_enter(client_t *self) {
 
     sem_wait(&self->semaphore); // Bloqueia o cliente, para que ele só faça a compra depois de ser atendido (espera na fila enquanto não for atendido)
 
-    // Sua lógica aqui.
-    buy_coins(self);
-
-    // Sua lógica aqui.
+    buy_coins(self); // Após o cliente ser retirado da fila, ele vai realizar a compra de suas moedas, chamando buy_coins
     debug("[CASH] - Turista [%d] comprou [%d] moedas.\n", self->id, self->coins);
 }
 
