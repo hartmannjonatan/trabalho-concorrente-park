@@ -68,6 +68,8 @@ void open_tickets(tickets_args *args){
     threads_tickets = (pthread_t*) malloc(sizeof(pthread_t)*n_tickets); // aloca o vetor de n_tickets
     pthread_mutex_init(&counter_workers_mutex, NULL); // inicializa o mutex relacionado ao contador de funcionários inicializados
     pthread_mutex_init(&counter_clients_mutex, NULL); // inicializa o mutex relacionado ao contador de clientes atendidos
+    pthread_mutex_init(&tickets_mutex, NULL); // inicializa o mutex relacionado à abertura da bilheteria
+    pthread_cond_init(&open_tickets_cond, NULL); // inicializa a condição relacionada à abertura da bliheteria
     for (int i = 0; i < n_tickets; i++) {
         threads_tickets[i] = args->tickets[i]->thread; // associa cada elemento do vetor de threads com a thread já definida em tickets_t
         pthread_create(&threads_tickets[i], NULL, sell, (void *)args->tickets[i]); // cria uma thread por atendente chamando o método sell
@@ -81,6 +83,8 @@ void close_tickets(){
 
     pthread_mutex_destroy(&counter_workers_mutex); // Destroy o mutex contador de funcionários inicializados
     pthread_mutex_destroy(&counter_clients_mutex); // Destroy o mutex contador de clientes atendidos
+    pthread_mutex_destroy(&tickets_mutex); // Destroy o mutex de controle de abertura da bilheteria
+    pthread_cond_destroy(&open_tickets_cond); // Destroy a condição de abertura da bilheteria 
 
     free(threads_tickets); // desaloca o vetor de threads
 }

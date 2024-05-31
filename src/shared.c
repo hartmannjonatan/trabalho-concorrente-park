@@ -5,7 +5,10 @@
 
 // Você pode declarar novas funções (ou variaveis compartilhadas) aqui
 client_t** array_clients = NULL; // Array de clientes
-int n_clients = -1;
+int n_clients = -1; // Número de clientes
+
+toy_t** array_toys = NULL;  // Array de brinquedos
+int n_toys = -1; // Número de brinquedos
 
 pthread_mutex_t tickets_mutex = PTHREAD_MUTEX_INITIALIZER; // Mutex usado para controlar a abertura da bilheteria (clientes aguardam que esta seja aberta)
 pthread_cond_t open_tickets_cond = PTHREAD_COND_INITIALIZER; // Condição que verifica se a bilheteria já foi aberta

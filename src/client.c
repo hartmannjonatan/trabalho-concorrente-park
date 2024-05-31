@@ -29,7 +29,9 @@ void *enjoy(void *arg){
     while (client->coins > 0) {
         toy_t* toy = choose_toy(client);
         client->coins--;
-        access_toy(toy);
+        debug("[INFO] - Cliente [%d] esperando para entrar no brinquedo [%d]!\n", client->id, toy->id);
+        access_toy(toy, client->id);
+        debug("[INFO] - Cliente [%d] saiu do brinquedo [%d]!\n", client->id, toy->id);
     }
 
     debug("[EXIT] - O turista saiu do parque.\n");
