@@ -13,9 +13,9 @@
 
 #define MAX_CAPACITY_TOY    5  // Capacidade maxima dos brinquedos.
 #define MIN_CAPACITY_TOY    3   // Capacidade minima dos brinquedos.
-#define EXECUTION_TIME_TOY  3   // Tempo de execução dos brinquedos.
-#define WAIT_TIME_TOY       5   // Tempo de espera para entrada de clientes
-#define MAX_COINS           3  // Maximo de moedas que um cliente pode comprar
+#define EXECUTION_TIME_TOY  1   // Tempo de execução dos brinquedos.
+#define WAIT_TIME_TOY       2   // Tempo de espera para entrada de clientes
+#define MAX_COINS           4  // Maximo de moedas que um cliente pode comprar
 
 #define DEBUG               1   //  Alterne (0 or 1) essa macro se voce espera desabilitar todas as mensagens de debug.
 
@@ -32,6 +32,13 @@ typedef struct toy{
   int id;                    // O id de um brinquedo.
   int capacity;              // A capacidade total de um brinquedo.
   pthread_t thread;          // A thread de um brinquedo.
+  int clients_in_toy;
+  pthread_mutex_t n_clientes_mutex;
+  sem_t capacity_semaphore;
+  sem_t enter_semaphore;
+  sem_t join_semaphore;
+  sem_t exit_semaphore;
+  sem_t ready_semaphore;
 } toy_t;
 
 /* Adicione as estruturas de sincronização que achar necessárias */
