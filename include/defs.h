@@ -31,14 +31,6 @@ typedef struct ticket{
 typedef struct toy{
   int id;                    // O id de um brinquedo.
   int capacity;              // A capacidade total de um brinquedo.
-  sem_t capacity_semaphore;  // Semáforo para controle da capacidade máxima de pessoas no brinquedo
-  sem_t join_semaphore;      // Semáforo para controle dos clientes que entraram no brinquedo
-  pthread_mutex_t toy_running_mutex; // Mutex usado para controlar a execução do brinquedo
-  pthread_cond_t running_toy_cond; // Condição que verifica se está em execução
-  int toy_isrunning; // variável que identifica se o brinquedo está executando ou não
-  int toy_isready;
-  pthread_mutex_t toy_ready_mutex;
-  pthread_cond_t ready_toy_cond;
   pthread_t thread;          // A thread de um brinquedo.
 } toy_t;
 

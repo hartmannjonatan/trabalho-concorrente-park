@@ -28,13 +28,13 @@ void *enjoy(void *arg){
     wait_ticket(client); // cliente espera pela liberação da bilheteria
 
     // Ir brincar
-    while (client->coins > 0) {
-        toy_t* toy = choose_toy(client);
-        client->coins--;
-        debug("[INFO] - Cliente [%d] esperando para entrar no brinquedo [%d]!\n", client->id, toy->id);
-        access_toy(toy, client->id);
-        debug("[INFO] - Cliente [%d] saiu do brinquedo [%d]!\n", client->id, toy->id);
-    }
+    // while (client->coins > 0) {
+    //     toy_t* toy = choose_toy(client);
+    //     client->coins--;
+    //     debug("[INFO] - Cliente [%d] esperando para entrar no brinquedo [%d]!\n", client->id, toy->id);
+    //     access_toy(toy, client->id);
+    //     debug("[INFO] - Cliente [%d] saiu do brinquedo [%d]!\n", client->id, toy->id);
+    // }
 
     debug("[EXIT] - O turista saiu do parque.\n");
 
