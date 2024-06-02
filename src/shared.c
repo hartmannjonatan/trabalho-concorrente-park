@@ -17,6 +17,9 @@ int tickets_isopen = 0; // variável que identifica se a bilheteria está aberta
 pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER; // Mutex usado para controlar a entrada dos clientes na fila da bilheteria
 sem_t queue_semaphore; // Semáforo usado para controlar a entrada e saída dos clientes na fila da bilheteria
 
+pthread_mutex_t close_park_mutex = PTHREAD_MUTEX_INITIALIZER; // Mutex usado para encerrar o park
+int close_park = 0; // Variável usada para encerrar o park
+
 /**********************************
  *          ATENÇÃO               *
  *   NÃO EDITAR ESSAS VARIAVEIS   *

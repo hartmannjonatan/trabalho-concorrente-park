@@ -154,7 +154,8 @@ int main(int argc, char *argv[]){
     *                                       EXCEÇÃO                                 *
     *********************************************************************************/
     
-    // Sincronize aquis
+    // Sincronize aqui
+    pthread_mutex_destroy(&close_park_mutex);
 
     // Desalocando argumentos.
     free(cli_args);

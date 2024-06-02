@@ -95,6 +95,10 @@ void close_gate(){
         pthread_join(threads_clientes[i], NULL); // finaliza a thread de cada cliente
         sem_destroy(&array_clients[i]->semaphore); // destroy o semaforo de cada cliente
     }
-    // avisar os brinquedos para desligarem
+    pthread_mutex_lock(&close_park_mutex); // Garante a atomicidade da escrita da variável close_park
+    close_park = 1; // Informa que o park foi fechado pois todos os clientes já saíram dele
+    pthread_mutex_unlock(&close_park_mutex); // Desbloqueia o mutex
+    for (int i = 0; i < n_toys; i++) 
+        sem_post(&array_toys[i]->join_semaphore); // Faz um for desbloqueando todos os brinquedos que estão aguardando por clientes (mas não há mais nenhum); 
     free(threads_clientes); // desaloca o vetor de threads
 }

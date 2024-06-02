@@ -64,8 +64,12 @@ void *turn_on(void *args){
         toy->enter_toy = 1; // Entrada do brinquedo está liberada
         pthread_cond_broadcast(&toy->enter_cond); // Sinaliza a todos os clientes que estão aguardando a entrada
         sem_wait(&toy->join_semaphore); // Aguarda pelo menos um brinquedo entrar no brinquedo
-        // if(!park_status)
-        //     break;
+        pthread_mutex_lock(&close_park_mutex); // Garante o acesso atômico na verificação da variável close_park
+        if (close_park) {
+            pthread_mutex_unlock(&close_park_mutex); // Libera o mutex
+            break; // Encerra o while se não há mais nenhum cliente no park
+        }
+        pthread_mutex_unlock(&close_park_mutex); // Libera o mutex
         sleep(WAIT_TIME_TOY); // Aguarda um tempo de espera para que novos clientes entrem no brinquedo
         toy->enter_toy = 0; // Entrada está bloqueada, pois o brinquedo será ligado
 

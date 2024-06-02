@@ -11,11 +11,11 @@
 #define FALSE 0             // e FALSE para False (como no Python).
 
 
-#define MAX_CAPACITY_TOY    5  // Capacidade maxima dos brinquedos.
-#define MIN_CAPACITY_TOY    3   // Capacidade minima dos brinquedos.
-#define EXECUTION_TIME_TOY  1   // Tempo de execução dos brinquedos.
+#define MAX_CAPACITY_TOY    10  // Capacidade maxima dos brinquedos.
+#define MIN_CAPACITY_TOY    5   // Capacidade minima dos brinquedos.
+#define EXECUTION_TIME_TOY  3   // Tempo de execução dos brinquedos.
 #define WAIT_TIME_TOY       2   // Tempo de espera para entrada de clientes
-#define MAX_COINS           4  // Maximo de moedas que um cliente pode comprar
+#define MAX_COINS           20  // Maximo de moedas que um cliente pode comprar
 
 #define DEBUG               1   //  Alterne (0 or 1) essa macro se voce espera desabilitar todas as mensagens de debug.
 

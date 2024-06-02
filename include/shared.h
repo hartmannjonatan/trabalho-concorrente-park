@@ -17,6 +17,9 @@ extern int tickets_isopen; // variável que identifica se a bilheteria está abe
 extern pthread_mutex_t queue_mutex; // Mutex usado para controlar a entrada dos clientes na fila da bilheteria
 extern sem_t queue_semaphore; // Semáforo usado para controlar a entrada e saída dos clientes na fila da bilheteria
 
+extern pthread_mutex_t close_park_mutex; // Mutex usado para encerrar o park
+extern int close_park; // Variável usada para encerrar o park
+
 
 /**********************************
  *          ATENÇÃO               *
