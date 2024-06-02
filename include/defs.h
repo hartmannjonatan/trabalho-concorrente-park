@@ -35,9 +35,15 @@ typedef struct toy{
   int clients_in_toy;
   pthread_mutex_t n_clientes_mutex;
   sem_t capacity_semaphore;
-  sem_t enter_semaphore;
+  // sem_t enter_semaphore;
+  int enter_toy;
+  pthread_mutex_t enter_mutex;
+  pthread_cond_t enter_cond;
   sem_t join_semaphore;
-  sem_t exit_semaphore;
+  // sem_t exit_semaphore;
+  int exit_toy;
+  pthread_mutex_t exit_mutex;
+  pthread_cond_t exit_cond;
   sem_t ready_semaphore;
 } toy_t;
 

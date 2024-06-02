@@ -31,6 +31,10 @@ void *sell(void *args){
     pthread_mutex_unlock(&counter_workers_mutex); // desbloqueia o mutex do contador de atendentes inicializados
 
     while (TRUE) { // Utiliza a ideia de bag of work para as threads funcionárias
+        if(n_clients == 0){
+            debug("[INFO] - Bilheteria Fechou porque não há clientes na fila!\n"); //Caso em que há 0 clientes
+            break;
+        }
         sem_wait(&queue_semaphore); // Espera até que haja um cliente na fila
 
         pthread_mutex_lock(&queue_mutex); // Bloqueia o mutex, para que a retirada do cliente da fila sejá feita de forma atômica

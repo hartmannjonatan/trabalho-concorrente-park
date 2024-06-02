@@ -95,5 +95,6 @@ void close_gate(){
         pthread_join(threads_clientes[i], NULL); // finaliza a thread de cada cliente
         sem_destroy(&array_clients[i]->semaphore); // destroy o semaforo de cada cliente
     }
+    // avisar os brinquedos para desligarem
     free(threads_clientes); // desaloca o vetor de threads
 }
