@@ -32,7 +32,6 @@ void *sell(void *args){
 
     while (TRUE) { // Utiliza a ideia de bag of work para as threads funcionárias
         if(n_clients == 0){
-            debug("[INFO] - Bilheteria Fechou porque não há clientes na fila!\n"); //Caso em que há 0 clientes
             break;
         }
         sem_wait(&queue_semaphore); // Espera até que haja um cliente na fila
@@ -87,6 +86,10 @@ void close_tickets(){
     pthread_mutex_destroy(&counter_workers_mutex); // Destroy o mutex contador de funcionários inicializados
     pthread_mutex_destroy(&counter_clients_mutex); // Destroy o mutex contador de clientes atendidos
     pthread_mutex_destroy(&tickets_mutex); // Destroy o mutex de controle de abertura da bilheteria
+
+    if(n_clients == 0) {
+        debug("[INFO] - Bilheteria Fechou porque não há clientes na fila!\n"); //Caso em que há 0 clientes
+    }
 
     free(threads_tickets); // desaloca o vetor de threads
 }
