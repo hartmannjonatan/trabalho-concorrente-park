@@ -29,22 +29,20 @@ typedef struct ticket{
 
 /* Adicione as estruturas de sincronização que achar necessárias */
 typedef struct toy{
-  int id;                    // O id de um brinquedo.
-  int capacity;              // A capacidade total de um brinquedo.
-  pthread_t thread;          // A thread de um brinquedo.
-  int clients_in_toy;
-  pthread_mutex_t n_clientes_mutex;
-  sem_t capacity_semaphore;
-  // sem_t enter_semaphore;
-  int enter_toy;
-  pthread_mutex_t enter_mutex;
-  pthread_cond_t enter_cond;
-  sem_t join_semaphore;
-  // sem_t exit_semaphore;
-  int exit_toy;
-  pthread_mutex_t exit_mutex;
-  pthread_cond_t exit_cond;
-  sem_t ready_semaphore;
+  int id;                             // O id de um brinquedo.
+  int capacity;                       // A capacidade total de um brinquedo.
+  pthread_t thread;                   // A thread de um brinquedo.
+  int clients_in_toy;                 // Número de clientes dentro do brinquedo.
+  pthread_mutex_t n_clientes_mutex;   // Mutex responsável pelas operações com clients_in_toys.
+  sem_t capacity_semaphore;           // Semáforo da capacidade de clientes que o brinquedo suporta.
+  int enter_toy;                      // Variável de condição de entrada no brinquedo.
+  pthread_mutex_t enter_mutex;        // Mutex responsável por enter_cond.
+  pthread_cond_t enter_cond;          // Condição de entrada do brinquedo.
+  sem_t join_semaphore;               // Semáforo de clientes que entraram no brinquedo.
+  int exit_toy;                       // Variável de condição de saída.
+  pthread_mutex_t exit_mutex;         // Mutex responsável por exit_cond.
+  pthread_cond_t exit_cond;           // Condição de saída do brinquedo.
+  sem_t ready_semaphore;              // Semáforo de controle de nova rodada do brinquedo.
 } toy_t;
 
 /* Adicione as estruturas de sincronização que achar necessárias */
