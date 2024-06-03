@@ -73,9 +73,9 @@ void *turn_on(void *args){
         sleep(WAIT_TIME_TOY); // Aguarda um tempo de espera para que novos clientes entrem no brinquedo
         toy->enter_toy = 0; // Entrada está bloqueada, pois o brinquedo será ligado
 
-        debug("[ON] - Brinquedo [%d] foi ligado!\n", toy->id);
+        debug("[ON] - O brinquedo  [%d] foi ligado.\n", toy->id);
         sleep(EXECUTION_TIME_TOY); // Aguarda o tempo de execução do brinquedo
-        debug("[OFF] - Brinquedo [%d] foi desligado!\n", toy->id);
+        debug("[OFF] - O brinquedo [%d] foi desligado.\n", toy->id);
 
         debug("[OUT] - Brinquedo [%d] aguardando clientes sairem!\n", toy->id);
         toy->exit_toy = 1; // Saída do brinquedo está liberada

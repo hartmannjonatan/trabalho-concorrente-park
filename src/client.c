@@ -35,7 +35,7 @@ void *enjoy(void *arg){
         access_toy(toy, client->id);
     }
 
-    debug("[EXIT] - Cliente [%d] saiu do parque.\n", client->id);
+    debug("[EXIT] - O turista saiu do parque.\n");
 
     pthread_exit(NULL);
 }
